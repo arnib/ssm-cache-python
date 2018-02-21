@@ -13,8 +13,12 @@ class SSMParameter(object):
     ssm_client = boto3.client('ssm')
 
     def __init__(self, param_names=None, max_age=None, with_decryption=True):
-        if isinstance(param_names, basestring):
-            param_names = [param_names]
+        try:
+            if isinstance(param_names, basestring):
+                param_names = [param_names]
+        except NameError:
+            if isinstance(param_names, str):
+                param_names = [param_names]
         if not param_names:
             raise ValueError("At least one parameter should be configured")
         self._names = param_names
